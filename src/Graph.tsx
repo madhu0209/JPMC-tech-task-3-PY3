@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Table } from '@jpmorganchase/perspective';
+import { Table } from '@finos/perspective';
 import { ServerRespond } from './DataStreamer';
 import { DataManipulator } from './DataManipulator';
 import './Graph.css';
@@ -23,11 +23,14 @@ class Graph extends Component<IProps, {}> {
     const elem = document.getElementsByTagName('perspective-viewer')[0] as unknown as PerspectiveViewerElement;
 
     const schema = {
-      stock: 'string',
-      top_ask_price: 'float',
-      top_bid_price: 'float',
-      timestamp: 'date',
-    };
+      price_abc: 'float',
+      price_def: 'float',
+      ratio: 'float',
+      timestamp:'data',
+      upper_bound:'float',
+      lower_bound: 'float',
+      trigger_alert:'float',
+   };
 
     if (window.perspective && window.perspective.worker()) {
       this.table = window.perspective.worker().table(schema);
@@ -40,10 +43,13 @@ class Graph extends Component<IProps, {}> {
       elem.setAttribute('row-pivots', '["timestamp"]');
       elem.setAttribute('columns', '["top_ask_price"]');
       elem.setAttribute('aggregates', JSON.stringify({
-        stock: 'distinctcount',
-        top_ask_price: 'avg',
-        top_bid_price: 'avg',
-        timestamp: 'distinct count',
+        price_abc: 'avg',
+        price_def: 'avg',
+        ratio: 'avg',
+        timestamp:'distinct count',
+        upper_bound:'avg',
+        lower_bound: 'avg',
+        trigger_alert:'avg',
       }));
     }
   }
